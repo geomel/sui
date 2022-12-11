@@ -45,5 +45,16 @@ pragma solidity >=0.7.0 <0.9.0;
         emit NewSoleet(msg.sender, newSoleet.id); // Emit event when new Soleet is created
   }
 
+    // Function to be called when editing a new Tweet
+    function editSoleet(uint soleetId, string memory updatedText) public {
+    
+        Soleet storage soleet = soleets[soleetId]; // Returns the Tweet to edit from storage
+
+        // Only the owner of the Tweet can edit it
+        require(msg.sender == soleet.owner, "Only the owner of the (Sol)eet can edit it.");
+
+        soleet.soleetContent = updatedText; // Update the Tweet and store it
+    }
+
 
  }
