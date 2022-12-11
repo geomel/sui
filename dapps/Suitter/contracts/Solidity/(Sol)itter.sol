@@ -3,10 +3,12 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 /** 
- * @title (Sui)tter
+ * @title (Sol)itter
  * @dev A basic twitter functionality with events
  */
 
- contract Suitter{
+ contract Solitter{
+
+
 
  }
