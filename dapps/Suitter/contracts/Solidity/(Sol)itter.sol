@@ -56,5 +56,18 @@ pragma solidity >=0.7.0 <0.9.0;
         soleet.soleetContent = updatedText; // Update the Tweet and store it
     }
 
+        // FFunction to be called when deleting a Tweet
+    function deleteSoleet(uint soleetId) public {
+       
+        Soleet storage soleet = soleets[soleetId]; // Returns the Tweet to delete from storage
+
+        // Only the owner of the Tweet can edit it
+        require(msg.sender == soleet.owner, "Only the owner of the (Sol)eet can delete it.");
+
+        // Delete the tweet
+        delete soleets[soleetId];
+
+    }
+
 
  }
