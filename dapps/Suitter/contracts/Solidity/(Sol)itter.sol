@@ -40,7 +40,7 @@ pragma solidity >=0.7.0 <0.9.0;
         
         soleetCounter++; // Soleet counter
        
-        Soleet memory newSoleet = Soleet({  // New tweet initianilization
+        Soleet memory newSoleet = Soleet({  // New tweet
         id: soleetCounter,
         soleetContent: _text,
         timestamp: block.timestamp,
@@ -52,6 +52,12 @@ pragma solidity >=0.7.0 <0.9.0;
 
         emit NewSoleet(msg.sender, newSoleet.id); // Emit event when new Soleet is created
   }
+
+    // Function to be called when liking a Tweet
+    function likeSoleet(uint soleetId) public{
+        Soleet storage soleet = soleets[soleetId];
+        soleet.likes +=1; // Increments the total number of likes
+    }
 
     // Function to be called when editing a new Tweet
     function editSoleet(uint soleetId, string memory _updatedText) public {
@@ -71,10 +77,11 @@ pragma solidity >=0.7.0 <0.9.0;
        
         Soleet storage soleet = soleets[soleetId]; // Returns the Tweet to delete from storage
 
-        // Only the owner of the Tweet can delete it
+        // Only the owner of the Tweet can edit it
         require(msg.sender == soleet.owner, "Only the owner of the (Sol)eet can delete it.");
 
-        delete soleets[soleetId];  // Delete the tweet
+        // Delete the tweet
+        delete soleets[soleetId];
 
         emit DeleteSoleet(soleetId, true);
 
