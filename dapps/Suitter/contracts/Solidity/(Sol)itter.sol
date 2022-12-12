@@ -12,6 +12,7 @@ pragma solidity >=0.7.0 <0.9.0;
     event NewSoleet(address recipient, uint soleetId); // event for new tweet
     event EditSoleet(address recipient, uint soleetId, string oldtext, string updatedText); // event for edit tweets
     event DeleteSoleet(uint soleetId, bool isDeleted); // event for deleting tweets
+    event LikeSoleet(uint soleetId, uint totalLikes, address user); // event for tweet like
     event ReSoleet(address recipient, uint soleetId); // event for retweet functionality
 
     // The maximum number of characters in a tweet
@@ -54,9 +55,11 @@ pragma solidity >=0.7.0 <0.9.0;
   }
 
     // Function to be called when liking a Tweet
-    function likeSoleet(uint soleetId) public{
+    function likeSoleet(uint soleetId) public {
         Soleet storage soleet = soleets[soleetId];
         soleet.likes +=1; // Increments the total number of likes
+
+        emit LikeSoleet(soleetId, soleet.likes, msg.sender); // Emit event when like is triggered
     }
 
     // Function to be called when editing a new Tweet
