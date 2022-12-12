@@ -7,19 +7,19 @@ pragma solidity >=0.7.0 <0.9.0;
  * @dev A basic twitter aka (Sol)itter functionality with events
  */
 
- contract Solitter{
+ contract Solitter {
 
-    event NewSoleet(address recipient, uint soleetId); // event for new tweet
-    event EditSoleet(address recipient, uint soleetId, string oldtext, string updatedText); // event for edit tweets
-    event DeleteSoleet(uint soleetId, bool isDeleted); // event for deleting tweets
+    event NewSoleet(address user, uint soleetId); // event for new tweet
+    event EditSoleet(address user, uint soleetId, string oldtext, string updatedText); // event for tweet edi
+    event DeleteSoleet(uint soleetId, bool isDeleted); // event for tweet delete
     event LikeSoleet(uint soleetId, uint totalLikes, address user); // event for tweet like
-    event ReSoleet(address recipient, uint soleetId); // event for retweet functionality
+    event ReSoleet(address user, uint soleetId); // event for retweet 
 
     // The maximum number of characters in a tweet
     uint256 public maxSoleetChars = 280;
 
     // A Struct to hold a Tweet
-    struct Soleet{ 
+    struct Soleet { 
         uint256 id;
         string soleetContent;
         uint timestamp;
@@ -29,7 +29,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
     mapping(uint => Soleet) public soleets;  // A map to store tweet IDs to Tweets
 
-    uint public soleetCounter; // Tweet counter and uniquw Soleet id
+    uint public soleetCounter; // Tweet counter that will also be a unique Tweet id
 
     // Function to be called when creating a new Tweet 
     function createSoleet(string memory _text) public payable{
@@ -41,7 +41,7 @@ pragma solidity >=0.7.0 <0.9.0;
         
         soleetCounter++; // Soleet counter
        
-        Soleet memory newSoleet = Soleet({  // New tweet
+        Soleet memory newSoleet = Soleet({  // Initiate a new tweet
         id: soleetCounter,
         soleetContent: _text,
         timestamp: block.timestamp,
@@ -56,10 +56,32 @@ pragma solidity >=0.7.0 <0.9.0;
 
     // Function to be called when liking a Tweet
     function likeSoleet(uint soleetId) public {
-        Soleet storage soleet = soleets[soleetId];
+        
+        Soleet storage soleet = soleets[soleetId]; // Bring number of tweet likes in storage
         soleet.likes +=1; // Increments the total number of likes
 
-        emit LikeSoleet(soleetId, soleet.likes, msg.sender); // Emit event when like is triggered
+        emit LikeSoleet(soleetId, soleet.likes, msg.sender); // Emit event when like is pressed
+
+    }
+
+    // Function to retweet a (Sol)eet :-)
+    function reSoleet(uint soleetId) public {
+        
+        Soleet memory originalSoleet = soleets[soleetId]; // Get the original Tweet to be retweeted
+        
+        soleetCounter++; // Updated the total Tweet counter 
+       
+        Soleet memory resoleet = Soleet({
+            id: soleetCounter,
+            soleetContent: originalSoleet.soleetContent,
+            timestamp: block.timestamp,
+            owner: msg.sender,
+            likes: originalSoleet.likes
+        }); 
+
+        soleets[soleetCounter] = resoleet;
+
+        emit ReSoleet(msg.sender, soleetCounter);
     }
 
     // Function to be called when editing a new Tweet
