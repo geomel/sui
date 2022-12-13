@@ -18,7 +18,7 @@ pragma solidity >=0.7.0 <0.9.0;
     // The maximum number of characters in a tweet
     uint256 public maxSoleetChars = 280;
 
-    // A Struct to hold a Tweet
+    // A Struct that represents a Tweet
     struct Soleet { 
         uint256 id;
         string soleetContent;
@@ -42,17 +42,22 @@ pragma solidity >=0.7.0 <0.9.0;
         soleetCounter++; // Soleet counter
        
         Soleet memory newSoleet = Soleet({  // Initiate a new tweet
-        id: soleetCounter,
-        soleetContent: _text,
-        timestamp: block.timestamp,
-        owner: msg.sender,
-        likes: 0
+            id: soleetCounter,
+            soleetContent: _text,
+            timestamp: block.timestamp,
+            owner: msg.sender,
+            likes: 0
         });
 
         soleets[soleetCounter] = newSoleet; // Save newly created Soleet to map
+        
 
         emit NewSoleet(msg.sender, newSoleet.id); // Emit event when new Soleet is created
   }
+
+    function getUserSoleets(address _user) public{
+        
+    }
 
     // Function to be called when liking a Tweet
     function likeSoleet(uint soleetId) public {
