@@ -16,6 +16,7 @@ module suitter_demo::suitter{
         likes: u64
     }
 
+    /// Function to be called when creating a new Tweet 
     public entry fun createSuieet(text: String, ctx: &mut TxContext) {
         let id: UID = object::new(ctx);
 
@@ -24,6 +25,7 @@ module suitter_demo::suitter{
             id: object::uid_to_inner(&id)
         });
 
+        /// Make Tweet a shared object
         transfer::share_object(Suieet {     
             id: id,
             suieetContent: text,
