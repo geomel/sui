@@ -20,12 +20,10 @@ module suitter_demo::suitter{
     public entry fun createSuieet(text: String, ctx: &mut TxContext) {
         let id: UID = object::new(ctx);
 
-        /// Event to emit a Tweet IF
         event::emit(NewSuieet {
             id: object::uid_to_inner(&id)
         });
-
-        /// Make Tweet a shared object
+    
         transfer::share_object(Suieet {     
             id: id,
             suieetContent: text,
